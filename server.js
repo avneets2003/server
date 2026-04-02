@@ -41,7 +41,7 @@ const server = http.createServer((req, res) => {
         };
 
         const headers = {
-            'Authorization': req.headers.authorization,
+            'Authorization': req.headers.authorization || '',
             'Content-Type': req.headers['content-type'] || 'application/scim+json;charset=utf-8'
         };
 
@@ -58,17 +58,17 @@ const server = http.createServer((req, res) => {
             proxyRes.on('end', () => {
                 if (proxyRes.statusCode === 204) {
                     res.writeHead(200);
-                    res.end(JSON.stringify({ result: 'done' }));
+                    res.end(JSON.stringify({ result: 'success' }));
                 } else {
-                    res.writeHead(proxyRes.statusCode);
-                    res.end(data);
+                    res.writeHead(200);
+                    res.end(JSON.stringify({ result: 'failure' }));
                 }
             });
         });
 
         proxyReq.on('error', (error) => {
-            res.writeHead(500);
-            res.end(JSON.stringify({ error: error.message }));
+            res.writeHead(200);
+            res.end(JSON.stringify({ result: 'failed' }));
         });
 
         proxyReq.write(JSON.stringify(payload));

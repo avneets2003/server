@@ -56,8 +56,13 @@ const server = http.createServer((req, res) => {
             let data = '';
             proxyRes.on('data', (chunk) => data += chunk);
             proxyRes.on('end', () => {
-                res.writeHead(proxyRes.statusCode, proxyRes.headers);
-                res.end(data);
+                if (proxyRes.statusCode === 204) {
+                    res.writeHead(200);
+                    res.end(JSON.stringify({ result: 'done' }));
+                } else {
+                    res.writeHead(proxyRes.statusCode);
+                    res.end(data);
+                }
             });
         });
 

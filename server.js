@@ -46,7 +46,7 @@ const server = http.createServer((req, res) => {
         };
 
         const options = {
-            hostname: 'flows-demo-icd.dev.verify.ibmcloudsecurity.com',
+            hostname: 'avneetwf.dev.verify.ibmcloudsecurity.com',
             path: `/v2.0/Groups/${groupId}`,
             method: 'PATCH',
             headers: headers
